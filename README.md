@@ -55,15 +55,15 @@ The alignment script must be run prior to this step.
 
 ### Browser image and metagene construction
 
-Run browser_meta_plots.R to use coverage data to generate browser images against GFP transgenes (piRNA reporter and RNAi reporter), and to generate metagene plots using IP data.
-This script depends on R libraries:
-ggplot2
-scales
-reshape2
-eulerr
-gridExtra
-dplyr
+Run browser_meta_plots.R to use coverage data to generate browser images against GFP transgenes (piRNA reporter and RNAi reporter), and to generate metagene plots using IP data. Also contains Bayesian approach to define significantly up/down regulated genes.
 
+This script depends on R libraries:\
+ggplot2\
+scales\
+reshape2\
+eulerr\
+gridExtra\
+dplyr
 ```
 Rscript ./browser_meta_plots.R
 ```
