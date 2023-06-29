@@ -511,3 +511,34 @@ ggsave(gg_meta_wago4.IP_wago4,path=path,filename="gg_meta_wago4.IP_wago4.png",
 ggsave(gg_meta_wago4.IP_wago4,path=path,filename="gg_meta_wago4.IP_wago4.pdf",
        device="pdf",dpi=300,width=10,height=3)
 
+# define statistical relationships (example)
+
+prob.mat <- function(control,exp){
+  p1 <- control
+  p2 <- exp
+  t1 <- sum(p1)
+  t2 <- sum(p2)
+
+  pc <-(p1+p2)/(t1+t2)
+  pr1 <- (pc^p1)*(pc^p2)*((1-pc)^(t1-p1))*((1-pc)^(t2-p2))
+
+  pc1 <- p1/t1
+  pc2 <- p2/t2
+  pr2 <- (pc1^p1)*(pc2^p2)*((1-pc1)^(t1-p1)*(1-pc2)^(t2-p2))
+  
+  pr <- (pc/pc1)^p1*(pc/pc2)^p2*((1-pc)/(1-pc1))^(t1-p1)*((1-pc)/(1-pc2))^(t2-p2)
+
+  pr[is.na(pr)] <- sort(unique(pr),decreasing = F)[2]
+  pr
+}
+
+
+arb <- sort(unique(data_22G$DZ.20211015_wt.wago4.input.r1),decreasing = F)[2]
+
+pval.cgh1_rep1 <- prob.mat(data_22G$DZ.20211015_wt.wago4.input.r1,data_22G$DZ.20211015_cgh1.wago4.input.r1)
+alpha <- 0.05/length(pval.DZ.20211015_cgh1.wago4.input.r1)
+fold.DZ.20211015_cgh1.wago4.input.r1 <- log2((data_22G$DZ.20211015_cgh1.wago4.input.r1+arb)/(data_22G$DZ.20211015_wt.wago4.input.r1+arb))
+
+data_22G$data.sig.DZ.20211015_cgh1.wago4.input.r1_sig <- pval.DZ.20211015_cgh1.wago4.input.r1<=alpha & abs(fold.DZ.20211015_cgh1.wago4.input.r1)>=1
+data_22G$data.sig.DZ.20211015_cgh1.wago4.input.r1_sig_up <- pval.DZ.20211015_cgh1.wago4.input.r1<=alpha & fold.DZ.20211015_cgh1.wago4.input.r1>=1
+data_22G$data.sig.DZ.20211015_cgh1.wago4.input.r1_sig_down <- pval.DZ.20211015_cgh1.wago4.input.r1<=alpha & fold.DZ.20211015_cgh1.wago4.input.r1<=-1
